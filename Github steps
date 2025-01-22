@@ -8,6 +8,7 @@ Created a new repository on GitHub, specifying the repository name and optionall
 Method 1 (GitHub Website):
 Navigated to the newly created repository on the GitHub website.
 Used the web interface to drag and drop the file directly into the repository.
+
 Method 2 (Command Line):
 Initialized a local Git repository: git init
 Added the file to the staging area: git add <filename>
