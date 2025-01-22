@@ -1,0 +1,21 @@
+1. Account Creation:
+Created a GitHub account.
+
+2. Repository Creation:
+Created a new repository on GitHub, specifying the repository name and optionally adding a brief description.
+
+3. File Upload:
+Method 1 (GitHub Website):
+Navigated to the newly created repository on the GitHub website.
+Used the web interface to drag and drop the file directly into the repository.
+Method 2 (Command Line):
+Initialized a local Git repository: git init
+Added the file to the staging area: git add <filename>
+Committed the changes: git commit -m "Initial commit"
+Added the remote repository: git remote add origin <repository_url>
+Pushed the changes to GitHub: git push -u origin main
+
+4. README Creation:
+Created a README.md file (using Markdown formatting) within the repository.
+Added a brief description of the project, instructions on how to use the file, and any other relevant information.
+Committed and pushed the README.md file to the repository
