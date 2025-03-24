@@ -1,36 +1,183 @@
+//Signup Page
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Sign-Up</title>
-    <link rel="stylesheet" href="sstle.css">
+    <title>Signup</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div class="form" id="loginForm">
-            <h2>Login</h2>
-            <input type="email" placeholder="Email" required />
-            <input type="password" placeholder="Password" required />
-            <button>Login</button>
-            <div class="toggle" onclick="switchForm('signupForm')">Don't have an account? Sign up</div>
-        </div>
-        <div class="form hidden" id="signupForm">
-            <h2>Sign Up</h2>
-            <input type="text" placeholder="Full Name" required />
-            <input type="email" placeholder="Email" required />
-            <input type="password" placeholder="Password" required />
-            <input type="password" placeholder="Confirm Password" required />
-            <button>Sign Up</button>
-            <div class="toggle" onclick="switchForm('loginForm')">Already have an account? Log in</div>
-        </div>
+        <h2>Signup</h2>
+        <form id="signupForm">
+            <input type="text" id="name" placeholder="Name" required><br>
+            <input type="email" id="email" placeholder="Email" required><br>
+            <input type="password" id="password" placeholder="Password" required><br>
+            <button type="submit">Signup</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
-    <script>
-        function switchForm(formId) {
-            const forms = document.querySelectorAll('.form');
-            forms.forEach(form => form.classList.add('hidden'));
-            document.getElementById(formId).classList.remove('hidden');
-        }
-    </script>
+
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+
+//Login Page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email" required><br>
+            <input type="password" id="loginPassword" placeholder="Password" required><br>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="signup.html">Signup</a></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+//Profile Page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Profile</h2>
+        <p><strong>Name:</strong> <span id="profileName"></span></p>
+        <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+        <button id="logout">Logout</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+//CSS file
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+    background-color: #f4f4f4;   }
+.container {
+    width: 300px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px gray;   }
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;    }
+button {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;   }
+button:hover {
+    background: #218838;   }
+
+//Javascript
+document.addEventListener("DOMContentLoaded", function () {
+    // Signup Form
+    const signupForm = document.getElementById("signupForm");
+    if (signupForm) {
+        signupForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+
+            // Check if user already exists
+            if (users.some(user => user.email === email)) {
+                alert("User already exists! Please login.");
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Save user in localStorage
+            users.push({ name, email, password });
+            localStorage.setItem("users", JSON.stringify(users));
+
+            alert("Signup successful! Please login.");
+            window.location.href = "login.html";
+        });
+    }
+
+    // Login Form
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            let email = document.getElementById("loginEmail").value;
+            let password = document.getElementById("loginPassword").value;
+
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            let user = users.find(user => user.email === email && user.password === password);
+
+            if (!user) {
+                alert("Invalid email or password!");
+                return;
+            }
+
+            // Save logged-in user
+            localStorage.setItem("loggedInUser", JSON.stringify(user));
+            window.location.href = "profile.html";
+        });
+    }
+
+    // Profile Page
+    if (window.location.pathname.includes("profile.html")) {
+        let user = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!user) {
+            alert("You must log in first!");
+            window.location.href = "login.html";
+            return;
+        }
+
+        document.getElementById("profileName").innerText = user.name;
+        document.getElementById("profileEmail").innerText = user.email;
+
+        document.getElementById("logout").addEventListener("click", function () {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "login.html";
+        });
+    }
+});
